@@ -1,0 +1,34 @@
+
+<h1>Expense Record List</h1>
+
+
+<div class="list">
+  <ng-container *ngFor="let item of displayList ">
+    <span class="item-desc">{{item.description}}    </span>
+    <span class="item-desc">{{item.type}}    </span>
+    <span class="item-desc">{{item.amount}}    </span>
+    <span class="item-desc">{{item.date}}    </span>
+  </ng-container>
+</div>
+
+<div>
+  <h2>Create Record</h2>
+  <div class="item">
+    <div>
+      Description: <input [(ngModel)]="item.description">
+    </div>
+    <div>
+      Type: <input [(ngModel)]="item.type">
+    </div>
+    <div>
+      Amount: <input [(ngModel)]="item.amount">
+    </div>
+    <div>
+      Date: <input [(ngModel)]="item.date">
+    </div>
+  </div>
+
+</div>
+<div class="create-item">
+  <button (click)="reload()" class="button-blue">Save</button>
+</div>
