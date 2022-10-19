@@ -15,10 +15,10 @@ public class CreateItemTest
 
         // when
         //var response = await client.GetAsync("Greeting?name=" + name);
-        var response = await client.PostAsync();
+        //var response = await client.PostAsync();
         // then
-        response.EnsureSuccessStatusCode();
-        var responseBody = await response.Content.ReadAsStringAsync();
-        Assert.Equal("Hello, Bob", responseBody);
+        //response.EnsureSuccessStatusCode();
+        //var responseBody = await response.Content.ReadAsStringAsync();
+        //Assert.Equal("Hello, Bob", responseBody);
     }
 }

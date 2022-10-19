@@ -3,12 +3,24 @@
 
 
 <div class="list">
-  <ng-container *ngFor="let item of displayList ">
-    <span class="item-desc">{{item.description}}    </span>
-    <span class="item-desc">{{item.type}}    </span>
-    <span class="item-desc">{{item.amount}}    </span>
-    <span class="item-desc">{{item.date}}    </span>
-  </ng-container>
+  <table border="1">
+    <tr>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Amount</th>
+      <th>Date</th>
+      <th> </th>
+    </tr>
+    <ng-container *ngFor="let item of displayList ">
+      <tr>
+        <td>{{item.description}}    </td>
+        <td >{{item.type}}    </td>
+        <td>{{item.amount}}    </td>
+        <td>{{item.date}}    </td>
+        <td> <button (click)="reload()" class="button-blue">Delete</button> </td>
+      </tr>
+    </ng-container>
+  </table>
 </div>
 
 <div>
@@ -27,8 +39,6 @@
       Date: <input [(ngModel)]="item.date">
     </div>
   </div>
+  <button (click)="save()" >Save</button>
+</div>
 
-</div>
-<div class="create-item">
-  <button (click)="reload()" class="button-blue">Save</button>
-</div>

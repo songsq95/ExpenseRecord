@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RecordItem } from '../models/RecordItem';
 import { v4 as uuidv4 } from 'uuid';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 //import { RecordService } from '../services/record.service';
 
 @Component({
@@ -18,7 +19,7 @@ export class RecordListComponent implements OnInit, OnDestroy {
 
   private baseUrl: string;
   private http: HttpClient;
-
+  private httpUrl = "http://localhost:44425/";
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     this.http = http;
@@ -28,12 +29,12 @@ export class RecordListComponent implements OnInit, OnDestroy {
       description: '',
       type: '',
       amount: null,
-      date: new Date().toDateString(),
+      date: '',
     };
   }
 
   ngOnInit(): void {
-    this.reload();
+    this.loadData();
   }
 
   ngOnDestroy(): void {
@@ -52,52 +53,48 @@ export class RecordListComponent implements OnInit, OnDestroy {
   //}
 
   private loadData(): void {
-     this.displayList = this.getAll();
-     this.fullList = [...this.displayList];
-    //this.todoService.getAll().subscribe(res => {
-    //  console.log(res);
-    //  this.todoService.displayList = res;
-    //  this.fullList = [...this.todoService.displayList];
-    //})
+    this.getAll().subscribe(res => {
+      console.log(res);
+      this.displayList = res;
+      this.fullList = [...this.displayList];
+    })  
+  }
+
+  getAll(): Observable<RecordItem[]> {
+    return this.http.get<RecordItem[]>(this.httpUrl);
   }
 
 
-  getAll(): RecordItem[] {
-    return [
-      {
-        'id': '1',
-        'description': 'test1',
-        'type': 'meal',
-        'amount': 50,
-        'date': '2022-01-01',
-      },
-    ];
-  }
-
-
-  //createOne(body: RecordItem, records: RecordItem[]): RecordItem {
-  //  const record: RecordItem = {
-  //    ...body,
-  //    id: uuidv4(),
-  //    date: new Date().toISOString()
-  //  };
-  //  records.push(record);
-  //  return record;
+  //getAll(): RecordItem[] {
+  //  return [
+  //    {
+  //      'id': '1',
+  //      'description': 'test1',
+  //      'type': 'meal',
+  //      'amount': 50,
+  //      'date': '2022-01-01',
+  //    },
+  //  ];
   //}
 
-
-
-  //deleteOne(id: string, todos: ToDoItem[]): Observable<string> {
-  //  const index: number = todos.findIndex(t => t.id === id);
-  ///  todos.splice(index, 1);
-  //  this.write(todos);
-  //  return of(id);
-  //}
-
-
-  private write(items: RecordItem[]): void {
-    localStorage.setItem('records', JSON.stringify(items));
+  save(): void {
+    this.createOne(this.item);
   }
 
+  createOne(body: RecordItem): Observable<RecordItem> {
+    const record: RecordItem = {
+      ...body,
+      id: uuidv4(),
+    };
+    return this.http.post<RecordItem>(this.httpUrl, record);
+  }
+  
+  
+
+
+  deleteOne(id: string): Observable<string> {
+    const httpUrlId = this.httpUrl + "/" + id;
+    return this.http.delete<string>(httpUrlId);
+  }
 
 }

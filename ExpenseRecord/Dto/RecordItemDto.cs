@@ -20,7 +20,8 @@ namespace ExpenseRecord.Dto
         public int? Amount { get; set; }
 
         [Column("create_date")]
-        public DateOnly? Date { get; set; }
+        [MaxLength(50)]
+        public string? Date { get; set; }
 
 
     }
