@@ -6,7 +6,7 @@ namespace ExpenseRecord.Controllers
 {
 
     [ApiController]
-    [Route("api")]
+    [Route("[controller]")]
     public class ExpenseRecordController : ControllerBase
     {
 
