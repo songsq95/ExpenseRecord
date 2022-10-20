@@ -6,7 +6,7 @@ namespace ExpenseRecord.Controllers
 {
 
     [ApiController]
-    [Route("[controller]")]
+    [Route("api")]
     public class ExpenseRecordController : ControllerBase
     {
 
@@ -27,11 +27,10 @@ namespace ExpenseRecord.Controllers
         }
 
         [HttpPost]
-        public  string CreateItemAsync(RecordItemDto recordItemDto)
+        public List<RecordItemDto> CreateItemAsync(RecordItemDto recordItemDto)
         {
 
-            string id =  _recordService.CreateOne(recordItemDto);
-            return id;
+            return _recordService.CreateOne(recordItemDto);
         }
 
 

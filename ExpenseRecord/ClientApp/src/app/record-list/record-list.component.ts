@@ -19,7 +19,7 @@ export class RecordListComponent implements OnInit, OnDestroy {
 
   private baseUrl: string;
   private http: HttpClient;
-  private httpUrl = "http://localhost:44425/";
+  private httpUrl = " https://localhost:7081/api";
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     this.http = http;
@@ -41,9 +41,9 @@ export class RecordListComponent implements OnInit, OnDestroy {
     //取消订阅（响应式变量）
   }
 
-  reload(): void {
-    this.loadData();
-  }
+  //reload(): void {
+  //  this.loadData();
+  //}
 
 
   //async navToCreateNew(): Promise<boolean> {
@@ -56,32 +56,39 @@ export class RecordListComponent implements OnInit, OnDestroy {
     this.getAll().subscribe(res => {
       console.log(res);
       this.displayList = res;
-      this.fullList = [...this.displayList];
-    })  
+      //this.fullList = [...this.displayList];
+    })
   }
 
   getAll(): Observable<RecordItem[]> {
     return this.http.get<RecordItem[]>(this.httpUrl);
   }
 
-
-  //getAll(): RecordItem[] {
-  //  return [
-  //    {
-  //      'id': '1',
-  //      'description': 'test1',
-  //      'type': 'meal',
-  //      'amount': 50,
-  //      'date': '2022-01-01',
-  //    },
-  //  ];
-  //}
-
-  save(): void {
-    this.createOne(this.item);
+  private loadDataInit(): void {
+    this.displayList = this.getAllInit();
+    //this.fullList = [...this.displayList];
   }
 
-  createOne(body: RecordItem): Observable<RecordItem> {
+  getAllInit(): RecordItem[] {
+    return [
+      {
+        'id': '1',
+        'description': 'test1',
+        'type': 'meal',
+        'amount': 50,
+        'date': '2022-01-01',
+      },
+    ];
+  }
+
+  save(): void {
+    this.createOne(this.item).subscribe({
+    });
+    this.loadData();
+    
+  }
+
+  private createOne(body: RecordItem): Observable<RecordItem> {
     const record: RecordItem = {
       ...body,
       id: uuidv4(),
@@ -92,7 +99,18 @@ export class RecordListComponent implements OnInit, OnDestroy {
   
 
 
-  deleteOne(id: string): Observable<string> {
+  delete(body: RecordItem): void {
+    const ok = confirm(`Delete this item?`);
+    if (ok) {
+        this.deleteOne(body.id).subscribe(() => {
+        });
+      
+    }
+    this.loadData();
+
+  }
+
+  private deleteOne(id: string): Observable<string> {
     const httpUrlId = this.httpUrl + "/" + id;
     return this.http.delete<string>(httpUrlId);
   }

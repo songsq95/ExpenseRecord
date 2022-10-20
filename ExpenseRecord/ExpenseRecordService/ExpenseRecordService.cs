@@ -14,7 +14,7 @@ namespace ExpenseRecord.ExpenseRecordService
             return RecordList;
         }
 
-        public string CreateOne(RecordItemDto recordItemCreateDto)
+        public List<RecordItemDto> CreateOne(RecordItemDto recordItemCreateDto)
         {
             var id = Guid.NewGuid().ToString();
 
@@ -28,7 +28,7 @@ namespace ExpenseRecord.ExpenseRecordService
 
             };
             RecordList.Add(recordGetItem);
-            return id;
+            return RecordList;
         }
 
         
